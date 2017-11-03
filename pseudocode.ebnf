@@ -1,0 +1,40 @@
+@@grammar::PSEUDOCODE
+
+start
+=
+    statement $
+;
+
+statement
+=
+    | assignment
+    | ifstmt
+    | for
+    | while
+    | repeat
+;
+
+assignment
+=
+    identifier '<-' expression
+;
+
+ifstmt
+=
+    'IF' expression 'THEN' {statement}* 'ENDIF'
+;
+
+for
+=
+    'FOR' assignment 'TO' expression {statement}* 'NEXT'
+;
+
+while
+=
+    'WHILE' expression 'DO' {statement}* 'ENDWHILE'
+;
+
+repeat
+=
+    'REPEAT' {statement}* 'UNTIL' expression
+;
