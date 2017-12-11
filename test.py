@@ -1,3 +1,9 @@
 from pseudofun.pseudocode import *
 
-print(run("x <- 7+7\nPRINT x"))
+code = '''
+REPEAT
+    x <- x + 1
+UNTIL x = 7
+'''
+print(get_model(code))
+print(get_python(code))

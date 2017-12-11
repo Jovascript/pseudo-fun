@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from tatsu.codegen import ModelRenderer
 from tatsu.codegen import CodeGenerator
+from tatsu.synth import synthesize
+from tatsu.semantics import Node
 import sys
 
 from tatsu.model import ModelBuilderSemantics
@@ -44,8 +46,8 @@ class RepeatStatement(ModelRenderer):
     template = '''\
     while True:
         {body}
-        if {condition}:
-            break
+            if {condition}:
+                break
     '''
 
 class ConditionalStatement(ModelRenderer):
