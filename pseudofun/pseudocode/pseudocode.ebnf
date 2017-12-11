@@ -1,0 +1,98 @@
+@@grammar::PSEUDOCODE
+@@comments :: ?"\/\/.*$"
+@@keyword :: FOR NEXT IF ELSE UNTIL REPEAT OR AND NOT WHILE DO
+@@keyword :: ENDIF ENDWHILE
+
+
+start
+=
+    script $
+;
+
+script::Script = lines:{line}+;
+
+block::Block = lines:{line}*;
+line = @:statement ({NEWLINE}+ | $);
+
+statement
+=
+    assignment
+    | ifstmt
+    | for
+    | while
+    | repeat
+    | functioncall
+;
+
+functioncall::FunctionCall
+=
+    name:identifier ["("] arguments:",".{expression}* [")"]
+;
+assignment::AssignmentStatement
+=
+    identifier:identifier '<-' expression:expression
+;
+
+ifstmt::ConditionalStatement
+=
+    'IF' condition:expression 'THEN' body:block 'ENDIF'
+;
+
+for::ForStatement
+=
+    'FOR' identifier:identifier '<-' start:expression 'TO' end:expression body:block 'NEXT' identifier
+;
+
+while::WhileStatement
+=
+    'WHILE' condition:expression 'DO' body:block 'ENDWHILE'
+;
+
+repeat::RepeatStatement
+=
+    'REPEAT' body:block 'UNTIL' condition:expression
+;
+
+expression
+=
+    compound_expression
+    | simple_expression
+;
+
+compound_expression::CompoundExpression
+=
+    left:simple_expression operator:SYMBOL right:expression
+;
+simple_expression
+=
+    bracketed_expression
+    | identifier
+    | number
+    | string
+;
+bracketed_expression::BracketedExpression = '(' ~ expression:expression ')';
+
+SYMBOL = '+' | '-' | '*' | '/' | 'NOT' | 'OR' | '<' | '>' | '=' | '<>';
+
+identifier::Identifier = name:NAME;
+
+@name 
+NAME = /[a-zA-Z_][a-zA-Z0-9]*/;
+
+number
+=
+    real
+    | integer
+;
+
+real::float = /(?:\d+)?\.\d+/;
+integer::int = /\d+/;
+
+string::str
+=
+    /\"(\\.|[^"\\])*\"/
+;
+NEWLINE
+=
+    /[\n]+/
+;
