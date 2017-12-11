@@ -33,6 +33,26 @@ class ForStatement(ModelRenderer):
     for {identifier} in range(int({start}), int({end})+1):
         {body}
     '''
+
+class WhileStatement(ModelRenderer):
+    template = '''\
+    while {condition}:
+        {body}
+    '''
+
+class RepeatStatement(ModelRenderer):
+    template = '''\
+    while True:
+        {body}
+        if {condition}:
+            break
+    '''
+
+class ConditionalStatement(ModelRenderer):
+    template = '''\
+    if {condition}:
+        {body}
+    '''
 class AssignmentStatement(ModelRenderer):
     template = '''\
     {identifier} = {expression}'''
