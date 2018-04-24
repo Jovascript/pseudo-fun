@@ -1,4 +1,5 @@
 @@grammar::PSEUDOCODE
+@@whitespace :: /[\t ]+/
 @@comments :: ?"\/\/.*$"
 @@keyword :: FOR NEXT IF ELSE UNTIL REPEAT OR AND NOT WHILE DO
 @@keyword :: ENDIF ENDWHILE
@@ -12,7 +13,7 @@ start
 script::Script = lines:{line}+;
 
 block::Block = lines:{line}*;
-line = @:statement ({NEWLINE}+ | $);
+line = {NEWLINE}* @:statement ({NEWLINE}+ | $);
 
 statement
 =
@@ -26,7 +27,12 @@ statement
 
 functioncall::FunctionCall
 =
-    name:identifier ["("] arguments:",".{expression}* [")"]
+    name:identifier arguments:[arguments]
+;
+
+functiondef::FunctionDef
+=
+    'FUNCTION' name:identifier arguments:[arguments] body:block 'ENDFUNCTION'
 ;
 assignment::AssignmentStatement
 =
@@ -51,6 +57,11 @@ while::WhileStatement
 repeat::RepeatStatement
 =
     'REPEAT' body:block 'UNTIL' condition:expression
+;
+
+arguments::ArgumentList
+=
+    ["("] arguments:",".{expression}* [")"]
 ;
 
 expression

@@ -19,6 +19,7 @@ class PseudoPythonSemantics(ModelBuilderSemantics):
         if ast in symbol_conversions:
             ast = symbol_conversions[ast]
         return ast
+    
 
 THIS_MODULE = sys.modules[__name__]
 
@@ -75,5 +76,8 @@ class BracketedExpression(ModelRenderer):
 
 class FunctionCall(ModelRenderer):
     template = '''\
-    {name}({arguments::,:})'''
+    {name}{arguments}'''
+
+class ArgumentList(ModelRenderer):
+    template = '''({arguments::,:})'''
 
