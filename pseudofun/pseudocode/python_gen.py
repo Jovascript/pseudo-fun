@@ -64,7 +64,7 @@ class Identifier(ModelRenderer):
     template = '''\
     {name}'''
 
-class CompoundExpression(ModelRenderer):
+class SumExpression(ModelRenderer):
     template = '''\
     {left} {operator} {right}\
     '''
@@ -81,3 +81,10 @@ class FunctionCall(ModelRenderer):
 class ArgumentList(ModelRenderer):
     template = '''({arguments::,:})'''
 
+class FunctionDef(ModelRenderer):
+    template = '''\
+    def {name}{arguments}:
+        {body}
+    '''
+class ReturnStatement(ModelRenderer):
+    template = '''return {expression}'''

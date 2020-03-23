@@ -1,8 +1,8 @@
 @@grammar::PSEUDOCODE
 @@whitespace :: /[\t ]+/
 @@comments :: ?"\/\/.*$"
-@@keyword :: FOR NEXT IF ELSE UNTIL REPEAT OR AND NOT WHILE DO
-@@keyword :: ENDIF ENDWHILE
+@@keyword :: FOR NEXT IF ELSE UNTIL REPEAT OR AND NOT WHILE DO FUNCTION RETURN
+@@keyword :: ENDIF ENDWHILE ENDFUNCTION
 
 
 start
@@ -18,10 +18,12 @@ line = {NEWLINE}* @:statement ({NEWLINE}+ | $);
 statement
 =
     assignment
+    | return
     | ifstmt
     | for
     | while
     | repeat
+    | functiondef
     | functioncall
 ;
 
@@ -29,7 +31,10 @@ functioncall::FunctionCall
 =
     name:identifier arguments:[arguments]
 ;
-
+funccallexp
+=
+    '(' @:functioncall ')'
+;
 functiondef::FunctionDef
 =
     'FUNCTION' name:identifier arguments:[arguments] body:block 'ENDFUNCTION'
@@ -37,6 +42,11 @@ functiondef::FunctionDef
 assignment::AssignmentStatement
 =
     identifier:identifier '<-' expression:expression
+;
+
+return::ReturnStatement
+=
+    'RETURN' expression:expression
 ;
 
 ifstmt::ConditionalStatement
@@ -61,16 +71,20 @@ repeat::RepeatStatement
 
 arguments::ArgumentList
 =
-    ["("] arguments:",".{expression}* [")"]
+    arguments:",".{expression}*
 ;
 
 expression
 =
-    compound_expression
+    funccallexp
+    | compound_expression
     | simple_expression
 ;
-
-compound_expression::CompoundExpression
+compound_expression
+=
+    sum_expression
+;
+sum_expression::SumExpression
 =
     left:simple_expression operator:SYMBOL right:expression
 ;

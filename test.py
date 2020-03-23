@@ -1,13 +1,14 @@
 from pseudofun.pseudocode import *
 
 code = '''
-x <- 0
-REPEAT
-    x <- x + 1
-UNTIL x = 7
-PRINT x
-x <- x + 1
-PRINT x
+FUNCTION noot x
+    PRINT x
+ENDFUNCTION
+x <- a
+x <- (a)
+x <- (a h)
+X <- (a ((h)))
+x <- (a(f))
 '''
 print(get_model(code))
 print(get_python(code))
